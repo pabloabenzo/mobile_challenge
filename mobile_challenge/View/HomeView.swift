@@ -10,14 +10,14 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         TabView {
-            ChallengeView()
+            NewsListView()
                 .tabItem {
-                    Label("News", systemImage: "house")
+                    Label("News", systemImage: "newspaper.fill")
                 }
             
             UsersView()
                 .tabItem {
-                    Label("Users", systemImage: "square.grid.2x2")
+                    Label("Users", systemImage: "person.fill")
                 }
         }
     }

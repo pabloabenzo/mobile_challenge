@@ -28,7 +28,7 @@ struct UserMapView: View {
                             .tint(.black)
                         Text("Back")
                             .fontWeight(.semibold)
-                            .foregroundColor(.black)
+                            .foregroundColor(.gray)
                     }
                 }
             }

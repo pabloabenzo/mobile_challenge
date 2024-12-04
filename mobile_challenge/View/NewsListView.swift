@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  NewsListView.swift
 //  mobile_challenge
 //
 //  Created by Pablo Benzo on 03/12/2024.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ChallengeView: View {
+struct NewsListView: View {
     
     private let challengeVM = ChallengeViewModel()
     @State private var isSheetViewPresented = false
@@ -21,7 +21,11 @@ struct ChallengeView: View {
                     newsImage(for: news.image)
                         .imageScale(.large)
                         .foregroundStyle(.tint)
-                    Text(news.title)
+                    Button {
+                        isSheetViewPresented = true
+                    } label: {
+                        Text(news.title)
+                    }
                     Spacer()
                     Text(news.category)
                 }
@@ -29,7 +33,7 @@ struct ChallengeView: View {
             .padding(.leading, 10)
             .sheet(isPresented: $isSheetViewPresented) {
                 DetailsView()
-                    .presentationDetents([.medium])
+                    .presentationDetents([.large])
             }
         }
         .navigationTitle("News")
@@ -96,5 +100,5 @@ private func newsImage(for news: String) -> some View {
 }
 
 #Preview {
-    ChallengeView()
+    NewsListView()
 }
