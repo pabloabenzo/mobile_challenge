@@ -66,6 +66,5 @@ struct ChallengeResponse: Codable {
             var bs: String
         }
     }
-
     
 }

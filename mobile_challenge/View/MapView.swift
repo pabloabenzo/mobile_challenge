@@ -25,7 +25,7 @@ struct UserMapView: View {
                 }) {
                     HStack {
                         Image(systemName: "chevron.left")
-                            .tint(.black)
+                            .tint(.gray)
                         Text("Back")
                             .fontWeight(.semibold)
                             .foregroundColor(.gray)

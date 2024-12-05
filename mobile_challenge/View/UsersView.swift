@@ -8,7 +8,9 @@
 import SwiftUI
 
 struct UsersView: View {
+    
     private let challengeVM = ChallengeViewModel()
+    private var deviceWidth = UIScreen.main.bounds.width
     
     var body: some View {
         NavigationView {
@@ -17,16 +19,39 @@ struct UsersView: View {
                     ForEach(challengeVM.usersResult, id: \.id) { user in
                         NavigationLink(destination: UserMapView(listResult: user.address, userResult: user)) {
                             HStack {
-                                Text("\(user.firstname), \(user.lastname): Ubicación")
-                                    .foregroundStyle(.primary)
-                                    .bold()
-                                    .tint(.blue)
+                                VStack {
+                                    Text("\(user.firstname), \(user.lastname): Location")
+                                        .font(.title2)
+                                        .bold()
+                                        .tint(.orange)
+                                    VStack {
+                                        Text("User info: ").underline()
+                                        Text(user.email)
+                                        Text(user.login.username)
+                                    }
+                                    Spacer()
+                                    VStack {
+                                        Text("Address: ").underline()
+                                        Text(user.address.street)
+                                        Text(user.address.suite)
+                                        Text(user.address.city)
+                                        Text(user.address.zipcode)
+                                    }
+                                    .tint(.indigo)
+                                    
+                                    
+                                    Divider()
+                                        .background(.gray)
+                                 
+                                }
+                                .frame(maxWidth: deviceWidth / 1, alignment: .leading)
                                 
                                 Image(systemName: "arrow.right")
                                     .tint(.indigo)
-                                
+                                    .frame(maxWidth: deviceWidth / 9)
                             }
-                            .padding(.leading, 10)
+                            Divider()
+                                .background(.gray)
                         }
                     }
                     .padding(.bottom, 20)

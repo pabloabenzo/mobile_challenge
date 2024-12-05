@@ -12,35 +12,56 @@ struct NewsListView: View {
     private let challengeVM = ChallengeViewModel()
     @State private var isSheetViewPresented = false
     @State private var searchBar = ""
+    @State private var selectedNews: ChallengeResponse.News?
     
     var body: some View {
         NavigationView {
-        ScrollView {
-            LazyVStack(alignment: .leading) {
-                ForEach(filteredSearch, id: \.id) { news in
-                    newsImage(for: news.image)
-                        .imageScale(.large)
-                        .foregroundStyle(.tint)
-                    Button {
-                        isSheetViewPresented = true
-                    } label: {
-                        Text(news.title)
+            ScrollView {
+                LazyVStack(alignment: .leading) {
+                    ForEach(filteredSearch, id: \.id) { news in
+                        newsImage(for: news.image)
+                            .foregroundStyle(.tint)
+                            .padding()
+                        Button {
+                            selectedNews = news
+                            isSheetViewPresented = true
+                        } label: {
+                            VStack(alignment: .leading) {
+                                Text(news.title)
+                                    .font(.title)
+                                    .tint(.indigo)
+                                Spacer()
+                                Text("Status: ")
+                                + Text(news.status.capitalized)
+                                Spacer()
+                                Text("Category: ")
+                                + Text(news.category.capitalized)
+                                Spacer()
+                                Text("Published: ")
+                                + Text(news.publishedAt)
+                                Spacer()
+                                Text("Updated: ")
+                                + Text(news.updatedAt)
+                                Spacer()
+                            }
+                        }
+                        Divider()
+                            .background(.gray)
                     }
-                    Spacer()
-                    Text(news.category)
+                }
+                .padding(.leading, 15)
+                .sheet(isPresented: $isSheetViewPresented) {
+                    if let selectedNews = selectedNews {
+                        DetailsView(news: selectedNews)
+                            .presentationDetents([.large])
+                    }
                 }
             }
-            .padding(.leading, 10)
-            .sheet(isPresented: $isSheetViewPresented) {
-                DetailsView()
-                    .presentationDetents([.large])
-            }
+            .navigationTitle("News")
+            .font(.headline)
+            .navigationBarTitleDisplayMode(.large)
+            .searchable(text: $searchBar, prompt: "Search")
         }
-        .navigationTitle("News")
-        .font(.headline)
-        .navigationBarTitleDisplayMode(.large)
-        .searchable(text: $searchBar, prompt: "Search")
-    }
         .onAppear {
             Task {
                 await challengeVM.getPosts()
@@ -73,7 +94,6 @@ struct NewsListView: View {
     }
 }
 
-
 private func newsImage(for news: String) -> some View {
     AsyncImage(url: URL(string: news)) { post in
         switch post {
@@ -91,7 +111,7 @@ private func newsImage(for news: String) -> some View {
             EmptyView()
         }
     }
-    .frame(width: 90, height: 60)
+    .frame(width: 100, height: 60)
     .cornerRadius(10)
     .overlay(
         RoundedRectangle(cornerRadius: 10)
